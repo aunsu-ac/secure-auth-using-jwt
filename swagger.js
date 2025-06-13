@@ -1,4 +1,5 @@
-import { config } from './config/index.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const swaggerOptions = {
     definition: {
@@ -9,7 +10,7 @@ export const swaggerOptions = {
             description: 'This project demonstrates asymmetric JWT token generation, verification, and storage in Redis, using environment variables for configuration. Tokens are AES-256-CBC encrypted, use RS256 (RSA key pair), and are managed via REST endpoints. See README for details.',
         },
         servers: [
-            { url: 'http://localhost:3000' },
+            { url: `${process.env.PROTOCOL}://${process.env.HOST_IP}:${process.env.PORT}` },
         ],
         components: {
             securitySchemes: {
@@ -24,8 +25,15 @@ export const swaggerOptions = {
                     type: 'object',
                     properties: {
                         userId: { type: 'string' },
-                        deleted: { type: 'boolean' },
-                        type: { type: 'string', enum: ['asymmetric'] },
+                        deleted: { type: 'boolean' }
+                    },
+                },
+                RedisUserProfile: {
+                    type: 'object',
+                    properties: {
+                        profileId: { type: 'string' },
+                        username: { type: 'string' },
+                        email: { type: 'string', format: 'email' }
                     },
                 },
             },

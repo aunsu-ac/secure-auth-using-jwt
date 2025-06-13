@@ -1,27 +1,26 @@
 import jwt from 'jsonwebtoken';
 import { promises as fs } from 'fs';
-import { config } from '../config/index.js';
 
 let publicKey, privateKey;
 
-export async function loadKeys() {
+export const loadKeys = async () => {
     publicKey = await fs.readFile('public.pem', 'utf8');
     privateKey = await fs.readFile('private.pem', 'utf8');
-}
+};
 
-export function signToken(payload) {
+export const signToken = (payload) => {
     return jwt.sign(payload, privateKey, {
         algorithm: 'RS256',
-        expiresIn: '1h',
-        issuer: config.issuer,
-        audience: config.audience,
+        expiresIn: process.env.JWT_EXPIRES_IN || '1d',
+        issuer: `${process.env.PROTOCOL}://${process.env.HOST_IP}:${process.env.PORT}`,
+        audience: process.env.AUDIENCE,
     });
-}
+};
 
-export function verifyToken(token) {
+export const verifyToken = (token) => {
     return jwt.verify(token, publicKey, {
         algorithms: ['RS256'],
-        issuer: config.issuer,
-        audience: config.audience,
+        issuer: `${process.env.PROTOCOL}://${process.env.HOST_IP}:${process.env.PORT}`,
+        audience: process.env.AUDIENCE,
     });
-}
+};

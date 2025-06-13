@@ -38,6 +38,9 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
     try {
         const { userId } = req.body || {};
+        if (userId && typeof userId !== 'string') {
+            return res.status(400).json({ error: 'userId must be a string' });
+        }
         const payload = {
             userId: userId || '12345',
             role: 'user',
@@ -120,7 +123,11 @@ router.post('/profile', authenticateToken, async (req, res) => {
  */
 router.post('/logout', authenticateToken, async (req, res) => {
     try {
-        const token = req.headers['authorization'].slice(7);
+        const authHeader = req.headers['authorization'];
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(400).json({ error: 'Authorization header missing or malformed' });
+        }
+        const token = authHeader.slice(7);
         const deleted = await deleteToken(token);
         if (!deleted) {
             return res.status(404).json({ error: 'Token not found' });
