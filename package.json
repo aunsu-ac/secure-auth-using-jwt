@@ -1,22 +1,23 @@
 {
-  "name": "jwt_learn",
+  "name": "jwt-demo",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Demonstrates asymmetric JWT tokens with Redis storage",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon server.js",
     "generate-keys": "node generateKeys.js"
   },
-  "author": "Aunsu Chandra",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
+    "redis": "^4.7.0",
+    "swagger-ui-express": "^5.0.1",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.7"
   }
 }
